@@ -35,6 +35,14 @@ class Message(BaseModel):
     content: str = Field(..., description="Message text content")
     # attachments, reactions, etc. could be added later
 
+class MessageCreate(BaseModel):
+    """
+    Incoming payload for creating a message via REST or WebSocket client
+    room_id comes from the path/connection context, so it is excluded here
+    """
+    sender: str = Field(..., description="Display name of the sender")
+    content: str = Field(..., description="Message text content")
+
 # Example schemas kept for reference (not used by the app right now)
 class User(BaseModel):
     name: str

@@ -1,12 +1,11 @@
 import os
-from typing import List, Optional
+from typing import Optional
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
 from bson import ObjectId
 
 from database import db, create_document, get_documents
-from schemas import Chatroom, Message
+from schemas import Chatroom, Message, MessageCreate
 
 app = FastAPI()
 
@@ -73,7 +72,7 @@ def list_messages(room_id: str, limit: Optional[int] = 50):
 
 
 @app.post("/api/rooms/{room_id}/messages")
-def post_message(room_id: str, payload: Message):
+def post_message(room_id: str, payload: MessageCreate):
     if db is None:
         raise HTTPException(status_code=500, detail="Database not configured")
     # ensure room_id matches
